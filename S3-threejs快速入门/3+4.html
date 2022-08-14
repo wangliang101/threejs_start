@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.第一个3D案例—创建3D场景</title>
+  </head>
+  <body>
+    <script type="module">
+      import * as THREE from '../three.module.js';
+      // 新建场景
+      const scene = new THREE.Scene();
+      // 创建一个正方体
+      const geometry = new THREE.BoxGeometry(100, 100, 100);
+      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      // 创建网格材质
+      const mesh = new THREE.Mesh(geometry, material);
+      // 把网格模型添加到三位场景中
+      scene.add(mesh);
+
+      // 创建相机
+      const width = 800;
+      const height = 400;
+      const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
+      camera.position.set(200, 200, 200);
+      camera.lookAt(0, 0, 0);
+
+      // 创建渲染器
+      const render = new THREE.WebGLRenderer();
+      render.setSize(width, height);
+      render.render(scene, camera);
+
+      // 插入在html中
+      document.body.appendChild(render.domElement);
+    </script>
+  </body>
+</html>
