@@ -4,11 +4,20 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3.第一个3D案例—创建3D场景</title>
+    <title>5.点光源及相机控制器</title>
   </head>
   <body>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../three.module.js"
+        }
+      }
+    </script>
     <script type="module">
-      import * as THREE from '../three.module.js';
+      import * as THREE from 'three';
+
+      import { OrbitControls } from '../three.js-r139/examples/jsm/controls/OrbitControls.js';
       // 新建场景
       const scene = new THREE.Scene();
       // 创建一个正方体
@@ -21,11 +30,25 @@
       // 添加光源
       // 平行光
       const ambientLight = new THREE.AmbientLight(0x404040);
-      // scene.add(ambientLight);
+      scene.add(ambientLight);
       // 点光源
       const pointLight = new THREE.PointLight(0xffffff, 1);
-      pointLight.position.set(200, 300, 600);
+      pointLight.position.set(200, 100, 90);
       scene.add(pointLight);
+
+      // 设置网格材质位置
+      // mesh.position.set(100, 0, 0);
+
+      // 设置材质旋转角度
+      mesh.rotateX(Math.PI / 4);
+
+      // 显示坐标轴
+      const axesHelper = new THREE.AxesHelper(200);
+      scene.add(axesHelper);
+
+      // 显示点光源
+      const pointLightHelper = new THREE.PointLightHelper(pointLight, 10);
+      scene.add(pointLightHelper);
 
       // 创建相机
       const width = 800;
@@ -38,7 +61,15 @@
       const render = new THREE.WebGLRenderer();
       render.setSize(width, height);
       render.render(scene, camera);
+      console.log('THREE', THREE.OrbitControls);
 
+      const controls = new OrbitControls(camera, render.domElement);
+      // controls.change(() => {
+      //   render.render(scene, camera);
+      // });
+      controls.addEventListener('change', () => {
+        render.render(scene, camera);
+      });
       // 插入在html中
       document.body.appendChild(render.domElement);
     </script>
